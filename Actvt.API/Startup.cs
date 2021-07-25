@@ -2,7 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Actvt.API.Extensions;
+using Actvt.Application.Activities;
+using Actvt.Application.Core;
 using Actvt.Persistence;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,19 +36,7 @@ namespace Actvt.API
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Actvt.API", Version = "v1" });
-            });
-            services.AddDbContext<DataContext>(opt => 
-            {
-              opt.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
-            });
-            services.AddCors(opt =>{
-                opt.AddPolicy("CorsPolicy",policy =>{
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
-                });
-            });
+            services.AddApplicationServices(configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
