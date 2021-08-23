@@ -1,117 +1,38 @@
-import LoadingComponent from './LoadingComponent';
-import React,{ useEffect, useState} from 'react';
+import React from 'react';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
-import {Activity} from '../models/activity';
 import NavBar from './NavBar';
 import {Container} from 'semantic-ui-react';
-import {v4 as uuid} from 'uuid';
-import  agent  from '../api/agent';
+import { observer } from 'mobx-react-lite';
+import { Route, useLocation } from 'react-router-dom';
+import Homepage from '../../features/home/Homepage';
+import ActivityForm from '../../features/activities/form/ActivityForm';
+import ActivityDetails from '../../features/activities/details/ActivityDetails';
 
 
 
 function App() {
-  const [activities, setActivities] = useState<Activity[]>([]);
-  const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
-  const [editMode, setEditMode] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  //const [deleteId, setDeleteId] = useState('');
-
-  const handleSelectedActivity = (id:string) =>{
-      setSelectedActivity(activities.find(x =>x.id === id))
-  }
-
-  const handleCancelSelectActivity = ()=>{
-       setSelectedActivity(undefined);
-  }
-
-  const handleFormOpen = (id?:string) =>{
-       id ? handleSelectedActivity(id) : handleCancelSelectActivity();
-       setEditMode(true);
-  }
-
-  const handleFormClose = () =>{
-    setEditMode(false);
-  }
-
-  const handleCreateOrEditActivity = (activity:Activity) =>{
-      setSubmitting(true);
-      if(activity.id){
-        agent.Activities.update(activity).then(()=>{
-          setActivities([...activities.filter(x => x.id !== activity.id), activity])
-          setSelectedActivity(activity)
-          setEditMode(false);
-          setSubmitting(false);
-        })
-      }else{
-        activity.id = uuid();
-        agent.Activities.create(activity).then(()=>{
-          setActivities([...activities, {...activity, id:uuid()}])
-          setSelectedActivity(activity)
-          setEditMode(false);
-          setSubmitting(false);
-        })
-      }
-      
-  }
-
-
-  const handleDeleteActivity = (id:string) =>{
-    setSubmitting(true);
-    //setDeleteId(id);
-    agent.Activities.delete(id).then(()=>{
-      setActivities([...activities.filter(x => x.id !== id)])
-      setSubmitting(false);
-      //setDeleting(false);
-      //setDeleteId('');
-      
-    })
-    
-  }
-
-
+  const location = useLocation();
   
-
-  useEffect(() =>{
-     agent.Activities.list()
-           .then((res)=>{
-             let activities  : Activity[] = [];
-             res.forEach(activity =>{
-               activity.date = activity.date.split('T')[0];
-               activities.push(activity);
-             })
-              setActivities(activities);
-              setLoading(false);
-           })
-
-  },[])
-  
-  if(loading) return <LoadingComponent content={'App is Loading'}/>
-
-
   return (
     <>
-        <NavBar openForm={handleFormOpen}/>
-        <Container style={{marginTop:'7em'}}>
-          <ActivityDashboard 
-          activities={activities}
-          selectedActivity={selectedActivity}
-          selectActivity={handleSelectedActivity}
-          cancelSelectActivity={handleCancelSelectActivity}
-          editMode={editMode}
-          openForm={handleFormOpen}
-          closeForm= {handleFormClose}
-          createOrEdit={handleCreateOrEditActivity}
-          deleteActivity={handleDeleteActivity}
-          submitting={submitting}
-          //deleting={deleting}
-          //deleteId ={deleteId}
-          />
-        </Container>
+        <Route exact path='/' component={Homepage} />
+        <Route
+           path={'/(.+)'}
+           render = {()=>(
+            <>
+              <NavBar/>
+              <Container style={{marginTop:'7em'}}>
+                <Route exact path='/activities' component={ActivityDashboard} />
+                <Route path='/activities/:id' component={ActivityDetails} />
+                <Route key={location.key} path={['/createActivity','/manage/:id']} component={ActivityForm} />
+              </Container>
+            </>
+            
+            )}
+        />
         
     </>
   );
 }
 
-export default App;
+export default observer(App);
