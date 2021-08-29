@@ -5,6 +5,7 @@ import { Button, Form, Segment } from 'semantic-ui-react';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { useStore } from '../../../app/stores/store';
 import {v4 as uuid} from 'uuid';
+import { Formik } from 'formik';
 
 
 export default observer(function ActivityForm(){
@@ -27,28 +28,31 @@ export default observer(function ActivityForm(){
     },[id,loadActivity])
 
 
-     const handleSubmit = ()=>{
-         if(activity.id.length === 0){
-             let newActivity = {
-                 ...activity,
-                 id: uuid()
-             }
-             createActivity(newActivity).then(()=>history.push(`/activities/${newActivity.id}`))
-         }else{
-            updateActivity(activity).then(()=>history.push(`/activities/${activity.id}`))
-         }
+    //  const handleSubmit = ()=>{
+    //      if(activity.id.length === 0){
+    //          let newActivity = {
+    //              ...activity,
+    //              id: uuid()
+    //          }
+    //          createActivity(newActivity).then(()=>history.push(`/activities/${newActivity.id}`))
+    //      }else{
+    //         updateActivity(activity).then(()=>history.push(`/activities/${activity.id}`))
+    //      }
          
-     }
+    //  }
 
-     const handleInputChange = (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
-         const {name, value} = e.target
-         setActivity({...activity, [name]:value})
-     }
+    //  const handleInputChange = (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
+    //      const {name, value} = e.target
+    //      setActivity({...activity, [name]:value})
+    //  }
 
     if(loadingInitial) return <LoadingComponent content="Loading activity..."/>
 
     return (
         <Segment clearing>
+            <Formik initialValues={activity} onSubmit={}>
+                
+            </Formik>
             <Form onSubmit={handleSubmit} autoComplete='off'>
                 <Form.Input  placeholder='Title' value={activity.title} name='title' onChange={handleInputChange}/>
                 <Form.TextArea placeholder='Description' value={activity.description} name='description' onChange={handleInputChange}/>
