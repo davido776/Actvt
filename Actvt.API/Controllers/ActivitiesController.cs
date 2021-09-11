@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Actvt.Application.Activities;
 using Actvt.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Actvt.API.Controllers
@@ -16,7 +17,8 @@ namespace Actvt.API.Controllers
         {
             return HandleResult(await Mediator.Send(new List.Query()));
         } 
-
+        
+       
         [HttpGet("{id}")]
         public async Task<ActionResult<Activity>> GetActivity(Guid id)
         {
