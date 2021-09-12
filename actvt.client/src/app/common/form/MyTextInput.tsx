@@ -5,6 +5,7 @@ import Formik, { useField } from 'formik';
 interface Props{
     placeholder:string;
     name:string;
+    type?:string;
     label?:string;
 }
 

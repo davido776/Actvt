@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Actvt.API.Controllers
 {
+    [AllowAnonymous]
     public class ActivitiesController : BaseApiController
     {
         
