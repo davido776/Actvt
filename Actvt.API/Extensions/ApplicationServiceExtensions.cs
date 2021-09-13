@@ -1,6 +1,8 @@
 using Actvt.Application.Activities;
 using Actvt.Application.Core;
+using Actvt.Application.Interfaces;
 using Actvt.Persistence;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +30,7 @@ namespace Actvt.API.Extensions
             });
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
         }

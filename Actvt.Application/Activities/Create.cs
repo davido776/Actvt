@@ -5,6 +5,8 @@ using Actvt.Persistence;
 using MediatR;
 using FluentValidation;
 using Actvt.Application.Core;
+using Actvt.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Actvt.Application.Activities
 {
@@ -27,15 +29,28 @@ namespace Actvt.Application.Activities
 
         public class Handler : IRequestHandler<Command,Result<Unit>>
         {
+            private readonly IUserAccessor _userAccessor;
             private readonly DataContext _context;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _context = context;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
+                
+                var attendee = new ActivityAttendee
+                {
+                    AppUser = user,
+                    Activity = request.Activity,
+                    IsHost = true
+                };
+
+                request.Activity.Attendees.Add(attendee);
+
                 _context.Activities.Add(request.Activity);
                 var result = await _context.SaveChangesAsync() > 0;
 
