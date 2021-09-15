@@ -34,7 +34,7 @@ export default observer(function ActivityForm(){
 
     useEffect(()=>{
        if(id) loadActivity(id).then(activity=>setActivity(new ActivityFormValues(activity)))
-    },[id,loadActivity])
+    },[id,loadActivity]);
 
 
      const handleFormSubmit = (activity:ActivityFormValues)=>{
