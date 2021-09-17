@@ -1,3 +1,4 @@
+import { Image } from 'semantic-ui-react';
 import { history } from './../../index';
 import { makeAutoObservable, runInAction } from 'mobx';
 import { User, UserFormValues } from './../models/user';
@@ -56,5 +57,13 @@ export default class UserStore{
         } catch(error){
             throw error;
         }
+    }
+
+    setImage = (image:string) =>{
+        if(this.user) this.user.image = image
+    }
+
+    setDisplayName = (name: string) => {
+        if (this.user) this.user.displayName = name;
     }
 }

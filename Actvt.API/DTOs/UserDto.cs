@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Actvt.Domain;
+
 namespace Actvt.API.DTOs
 {
     public class UserDto
@@ -8,5 +11,7 @@ namespace Actvt.API.DTOs
         public string Username{ get; set; }
 
         public string Image { get; set; }
+
+        public ICollection<Photo> Photos { get; set; }
     }
 }
