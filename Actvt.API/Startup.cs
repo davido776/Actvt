@@ -22,6 +22,7 @@ using FluentValidation.AspNetCore;
 using Actvt.API.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Actvt.API.SignalR;
 
 namespace Actvt.API
 {
@@ -78,6 +79,7 @@ namespace Actvt.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }

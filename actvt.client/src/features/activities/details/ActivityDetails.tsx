@@ -8,16 +8,18 @@ import ActivityDetailHeader from './ActivityDetailHeader';
 import ActivityDetailInfo from './ActivityDetailInfo';
 import ActivityDetailSidebar from './ActivityDetailSidebar'; 
 import ActivityDetailChat from './ActivityDetailChat';
+import { clear } from 'console';
 
 
 export default observer(function ActivtityDetails() {
     const {activityStore} = useStore();
-    const {selectedActivity :activity,loadActivity,loadingInitial} = activityStore;
+    const {selectedActivity :activity,loadActivity,loadingInitial,clearSelectedActivity} = activityStore;
     const {id} = useParams<{id:string}>();
 
     useEffect(()=>{
         if(id) loadActivity(id);
-    },[id,loadActivity]);
+        return () => clearSelectedActivity();
+    },[id,loadActivity,clearSelectedActivity]);
 
     if(loadingInitial || !activity) return <LoadingComponent/>;
 
@@ -26,7 +28,7 @@ export default observer(function ActivtityDetails() {
             <Grid.Column width={10}>
                 <ActivityDetailHeader activity={activity}/>
                 <ActivityDetailInfo activity={activity}/>
-                <ActivityDetailChat />    
+                <ActivityDetailChat activityId={activity.id} />    
             </Grid.Column>
             <Grid.Column width={6}>
                 <ActivityDetailSidebar activity={activity}/>
