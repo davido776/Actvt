@@ -8,7 +8,6 @@ import ActivityDetailHeader from './ActivityDetailHeader';
 import ActivityDetailInfo from './ActivityDetailInfo';
 import ActivityDetailSidebar from './ActivityDetailSidebar'; 
 import ActivityDetailChat from './ActivityDetailChat';
-import { clear } from 'console';
 
 
 export default observer(function ActivtityDetails() {
