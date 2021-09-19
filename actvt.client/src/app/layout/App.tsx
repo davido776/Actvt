@@ -11,6 +11,7 @@ import { ToastContainer } from 'react-toastify';
 import LoginForm from '../../features/users/LoginForm';
 import NotFound from '../../features/errors/NotFound';
 import { useStore } from '../stores/store';
+import PrivateRoutes from './PrivateRoutes';
 import ProfilePage from '../../features/profiles/ProfilePage';
 import ModalContainer from '../common/modals/ModalContainer';
 import LoadingComponent from './LoadingComponent';
@@ -43,11 +44,10 @@ function App() {
               <NavBar/>
               <Container style={{marginTop:'7em'}}>
                 <Switch>
-                  <Route exact path='/activities' component={ActivityDashboard} />
-                  <Route path='/activities/:id' component={ActivityDetails} />
-                  <Route key={location.key} path={['/createActivity','/manage/:id']} component={ActivityForm} />
-                  <Route path='/profiles/:username' component={ProfilePage} />
-                  <Route path='/login' component={LoginForm} />
+                  <PrivateRoutes exact path='/activities' component={ActivityDashboard} />
+                  <PrivateRoutes path='/activities/:id' component={ActivityDetails} />
+                  <PrivateRoutes key={location.key} path={['/createActivity','/manage/:id']} component={ActivityForm} />
+                  <PrivateRoutes path='/profiles/:username' component={ProfilePage} />
                   <Route component={NotFound}/>
                 </Switch>
               </Container>
