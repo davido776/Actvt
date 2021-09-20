@@ -69,6 +69,8 @@ namespace Actvt.API
             //app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
 
@@ -80,6 +82,7 @@ namespace Actvt.API
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapFallbackToController("Index","Fallback");
             });
         }
     }
