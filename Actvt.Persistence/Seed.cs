@@ -39,6 +39,7 @@ namespace Actvt.Persistence
 
                 foreach (var user in users)
                 {
+                    var x = userManager.FindByEmailAsync(user.Email);
                     await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
 

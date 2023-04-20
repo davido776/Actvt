@@ -6,8 +6,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="ProdMigration\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ProdMigration\" />
+  </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>

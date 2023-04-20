@@ -1,15 +1,24 @@
 using System.Threading.Tasks;
 using Actvt.Application.Photos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Actvt.API.Controllers
 {
     public class PhotosController : BaseApiController
     {
-        [HttpPost]
+        [HttpGet]
+        public async Task<IActionResult> Add2()
+        {
+            return Ok("testing");
+            //return HandleResult(await Mediator.Send(command));
+        }
 
+        //[Authorize]
+        [HttpPost]
         public async Task<IActionResult> Add([FromForm] Add.Command command)
         {
+            
             return HandleResult(await Mediator.Send(command));
         }
 

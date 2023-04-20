@@ -48,12 +48,12 @@ namespace Actvt.Persistence
                 b.HasOne(o => o.Observer)
                   .WithMany(f =>f.Followings)
                   .HasForeignKey(o => o.ObserverId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                  .OnDelete(DeleteBehavior.Restrict);
                 
                 b.HasOne(o => o.Target)
                   .WithMany(f =>f.Followers)
                   .HasForeignKey(o => o.TargetId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                  .OnDelete(DeleteBehavior.Restrict);
 
             });
         }
